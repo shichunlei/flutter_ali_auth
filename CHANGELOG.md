@@ -1,5 +1,8 @@
 #  
 
+## 1.4.3
+* Fix Flutter Swift Package Manager discovery by matching the package directory, product, and target names to `ali_auth_spm`
+
 ## 1.4.2
 * Fix Android integration after renaming the package to `ali_auth_spm`
 * Fix CocoaPods discovery by matching the podspec name to `ali_auth_spm`

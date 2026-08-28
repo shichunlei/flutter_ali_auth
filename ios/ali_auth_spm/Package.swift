@@ -4,12 +4,12 @@
 import PackageDescription
 
 let package = Package(
-    name: "ali_auth",
+    name: "ali_auth_spm",
     platforms: [
         .iOS("13.0")
     ],
     products: [
-        .library(name: "ali-auth", targets: ["ali_auth"])
+        .library(name: "ali-auth-spm", targets: ["ali_auth_spm"])
     ],
     dependencies: [
         .package(name: "FlutterFramework", path: "../FlutterFramework"),
@@ -17,7 +17,7 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "ali_auth",
+            name: "ali_auth_spm",
             dependencies: [
                 .product(name: "FlutterFramework", package: "FlutterFramework"),
                 .product(name: "SDWebImage", package: "SDWebImage"),

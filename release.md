@@ -1,4 +1,7 @@
 
+## 1.4.3
+* 修复 Flutter 无法识别 Swift Package Manager 支持的问题，同步 SPM 目录、product 与 target 名称为 `ali_auth_spm`
+
 ## 1.4.2
 * 修复包名改为 `ali_auth_spm` 后 Android 工程引用失败的问题
 * 修复 CocoaPods 无法找到 `ali_auth_spm` podspec 的问题
