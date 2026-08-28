@@ -90,18 +90,32 @@ class AliAuth {
     return AliAuthPlatform.instance.dispose();
   }
 
-  /// WEB专用接口
-  static Future<void> checkAuthAvailable(String accessToken, String jwtToken,
-      {required Function(dynamic) success,
-      required Function(dynamic) error}) async {
+  /// Web only: returns the browser network connection reported by the SDK.
+  static Future<String?> get connection async {
+    return AliAuthPlatform.instance.getConnection();
+  }
+
+  /// Web only: enables or disables SDK logging.
+  static Future<void> setLoggerEnable(bool isEnable) async {
+    return AliAuthPlatform.instance.setLoggerEnable(isEnable);
+  }
+
+  /// Web only: authenticates the access token and JWT issued by your server.
+  static Future<void> checkAuthAvailable(
+    String accessToken,
+    String jwtToken, {
+    required void Function(dynamic) success,
+    required void Function(dynamic) error,
+  }) async {
     await AliAuthPlatform.instance
         .checkAuthAvailable(accessToken, jwtToken, success, error);
   }
 
-  /// WEB专用接口
-  static Future<void> getVerifyToken(
-      {required Function(dynamic) success,
-      required Function(dynamic) error}) async {
+  /// Web only: gets a local-number verification token.
+  static Future<void> getVerifyToken({
+    required void Function(dynamic) success,
+    required void Function(dynamic) error,
+  }) async {
     await AliAuthPlatform.instance.getVerifyToken(success, error);
   }
 }

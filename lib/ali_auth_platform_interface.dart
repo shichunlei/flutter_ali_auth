@@ -1,7 +1,7 @@
-import 'package:ali_auth/ali_auth_model.dart';
+import 'package:ali_auth_spm/ali_auth_model.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 import 'ali_auth_method_channel.dart'
-    if (dart.library.html) "ali_auth_web.dart";
+    if (dart.library.js_interop) 'ali_auth_web.dart';
 
 abstract class AliAuthPlatform extends PlatformInterface {
   /// Constructs a AliAuthPlatform.
@@ -65,11 +65,13 @@ abstract class AliAuthPlatform extends PlatformInterface {
   }
 
   Future<void> queryCheckBoxIsChecked() {
-    throw UnimplementedError('queryCheckBoxIsChecked() has not been implemented.');
+    throw UnimplementedError(
+        'queryCheckBoxIsChecked() has not been implemented.');
   }
 
   Future<void> setCheckboxIsChecked() {
-    throw UnimplementedError('setCheckboxIsChecked() has not been implemented.');
+    throw UnimplementedError(
+        'setCheckboxIsChecked() has not been implemented.');
   }
 
   Future<void> hideLoading() {
@@ -97,22 +99,28 @@ abstract class AliAuthPlatform extends PlatformInterface {
   }
 
   Future<String?> getConnection() {
-    throw UnimplementedError('getSdkVersion() has not been implemented.');
+    throw UnimplementedError('getConnection() has not been implemented.');
   }
 
   Future<void> setLoggerEnable(bool isEnable) {
-    throw UnimplementedError('getSdkVersion() has not been implemented.');
+    throw UnimplementedError('setLoggerEnable() has not been implemented.');
   }
 
-  /// 调用之前先去用户服务端获取accessToken和jwtToken
-  Future<void> checkAuthAvailable(String accessToken, String jwtToken,
-      Function(dynamic) success, Function(dynamic) error) async {
-    throw UnimplementedError('getSdkVersion() has not been implemented.');
+  /// Web only: checks whether number authentication is available.
+  Future<void> checkAuthAvailable(
+    String accessToken,
+    String jwtToken,
+    void Function(dynamic) success,
+    void Function(dynamic) error,
+  ) {
+    throw UnimplementedError('checkAuthAvailable() has not been implemented.');
   }
 
-  /// 身份鉴权成功后才可调用获取Token接口。
+  /// Web only: gets a local-number verification token after authentication.
   Future<void> getVerifyToken(
-      Function(dynamic) success, Function(dynamic) error) async {
-    throw UnimplementedError('getSdkVersion() has not been implemented.');
+    void Function(dynamic) success,
+    void Function(dynamic) error,
+  ) {
+    throw UnimplementedError('getVerifyToken() has not been implemented.');
   }
 }

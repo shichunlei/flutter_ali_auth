@@ -1,18 +1,8 @@
-[![Pub](https://img.shields.io/pub/v/ali_auth.svg)](https://pub.flutter-io.cn/packages/ali_auth)
-![example workflow](https://github.com/CodeGather/flutter_ali_auth/actions/workflows/build.yml/badge.svg)
-![example workflow](https://github.com/CodeGather/flutter_ali_auth/actions/workflows/release.yml/badge.svg)
-![example workflow](https://github.com/CodeGather/flutter_ali_auth/actions/workflows/publish.yml/badge.svg)
+[![Pub](https://img.shields.io/pub/v/ali_auth_spm.svg)](https://pub.dev/packages/ali_auth_spm)
 
+# ali_auth_spm
 
-# ali_auth
-
-[![GitHub license](https://img.shields.io/github/license/CodeGather/flutter_ali_auth?style=social)](https://github.com/CodeGather/flutter_ali_auth/blob/master/LICENSE)
-[![GitHub issues](https://img.shields.io/github/issues/CodeGather/flutter_ali_auth?style=social)](https://github.com/CodeGather/flutter_ali_auth/issues)
-[![GitHub forks](https://img.shields.io/github/forks/CodeGather/flutter_ali_auth?style=social)](https://github.com/CodeGather/flutter_ali_auth/network)
-[![GitHub stars](https://img.shields.io/github/stars/CodeGather/flutter_ali_auth?style=social)](https://github.com/CodeGather/flutter_ali_auth/stargazers)
-[![GitHub size](https://img.shields.io/github/repo-size/CodeGather/flutter_ali_auth?style=social)](https://github.com/CodeGather/flutter_ali_auth)
-[![GitHub release](https://img.shields.io/github/v/release/CodeGather/flutter_ali_auth?style=social)](https://github.com/CodeGather/flutter_ali_auth/releases)
-[![GitHub dependency](https://img.shields.io/librariesio/github/CodeGather/flutter_ali_auth?style=social)](https://github.com/CodeGather/flutter_ali_auth)
+This is a maintained fork of [`ali_auth`](https://github.com/CodeGather/flutter_ali_auth). It preserves the original attribution and license while adding iOS Swift Package Manager, a Swift implementation, and Web support. The fork is maintained at [`shichunlei/flutter_ali_auth`](https://github.com/shichunlei/flutter_ali_auth).
 
 
 ## :large_blue_circle: Internationalization
@@ -40,6 +30,22 @@ However, when using or referring to the ideas or related contents of this plug-i
 | :------:|:----:|
 | Android  | YES |
 | Ios      | YES |
+| Web      | YES |
+
+### iOS dependency management
+
+The plugin supports both Swift Package Manager and CocoaPods. Flutter 3.44 and later use Swift Package Manager automatically, while older Flutter projects can continue using CocoaPods.
+
+### Web setup
+
+Place Alibaba Cloud's number-authentication Web SDK at `web/js/numberAuth-web-sdk.js`, then load it before Flutter's bootstrap script in `web/index.html`:
+
+```html
+<script src="js/numberAuth-web-sdk.js"></script>
+<script src="flutter_bootstrap.js" async></script>
+```
+
+After obtaining `accessToken` and `jwtToken` from your application server, call `AliAuth.checkAuthAvailable`, followed by `AliAuth.getVerifyToken`. See `example/lib/my_home_page_web.dart` for a complete example.
 
 ## code click response
 
@@ -76,9 +82,7 @@ However, when using or referring to the ideas or related contents of this plug-i
 ## Install    
 ```
 dependencies:
-  ali_auth:
-    git:
-      url: https://github.com/CodeGather/flutter_ali_auth.git
+  ali_auth_spm: ^1.4.1
 ```
 
 ## DEMO    
@@ -88,16 +92,3 @@ dependencies:
 ## VIDEO
   
 <img src="https://raw.githubusercontent.com/CodeGather/flutter_ali_auth/master/screenshots/SVID_20220517_120504.gif" width="100"> 
-
-## Reward
-
-<img src="https://raw.githubusercontent.com/CodeGather/flutter_ali_auth/master/screenshots/play_al.jpg" width="200"><img src="https://raw.githubusercontent.com/CodeGather/flutter_ali_auth/master/screenshots/play_wx.jpg" width="222">  
-
-## QQ Group chat
-
-<img src="https://raw.githubusercontent.com/CodeGather/flutter_ali_auth/master/screenshots/play_qq.jpg" width="200">
-
-## Stargazers over time
-
-[![Stargazers over time](https://starchart.cc/CodeGather/flutter_ali_auth.svg)](https://starchart.cc/CodeGather/flutter_ali_auth)
-

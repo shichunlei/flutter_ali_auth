@@ -1,6 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.sean.rao.ali_auth">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <!--允许访问网络状态的权限-->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -29,7 +28,6 @@
         <activity
             android:name="com.mobile.auth.gatewayauth.PrivacyDialogActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            tools:replace="android:configChanges"
             android:exported="false"
             android:launchMode="singleTop"
             android:screenOrientation="behind"

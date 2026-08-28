@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:ui';
 
-import 'package:ali_auth/ali_auth.dart';
+import 'package:ali_auth_spm/ali_auth.dart';
 import 'package:ali_auth_example/my_router_page.dart';
 import 'package:ali_auth_example/config_editor_page.dart';
 import 'package:flutter/foundation.dart';

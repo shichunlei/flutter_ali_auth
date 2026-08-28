@@ -1,5 +1,9 @@
 #  
 
+## 1.4.1
+* 新增 iOS Swift Package Manager 支持，并继续兼容 CocoaPods
+* 将 iOS 插件源码从 Objective-C 全面迁移至 Swift，Flutter 通道接口保持不变
+
 ## 1.4.0
 * 更新android sdk 为 2.14.23
 * 更新ios sdk 为 2.14.18
@@ -12,7 +16,6 @@
 * 修复 iOS 端 privacyAlertTitleOffsetY 被覆盖的问题
 * 修复 iOS 端 privacyAlertContentHorizontalMargin 不支持的问题
 * 统一 500001 状态码的消息文本
-* 补齐 Web 端 ali_auth_web 插件实现，不支持的方法抛出明确提示
 * 新增动态参数配置页面，支持可视化调整 AliAuthModel 全部参数
 * 优化 Demo 页面布局，采用卡片式分组设计
 

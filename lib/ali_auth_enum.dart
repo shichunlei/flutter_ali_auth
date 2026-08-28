@@ -1,4 +1,5 @@
-import 'dart:io';
+import 'ali_auth_platform_stub.dart'
+    if (dart.library.io) 'ali_auth_platform_io.dart' as platform;
 
 /// 本机号码校验,一键登录
 enum SdkType { auth, login }
@@ -91,13 +92,13 @@ class EnumUtils {
       case Gravity.centerHorizntal:
         return 1;
       case Gravity.left:
-        if (Platform.isAndroid) {
+        if (platform.isAndroid) {
           return 3;
         } else {
           return 0;
         }
       case Gravity.right:
-        if (Platform.isAndroid) {
+        if (platform.isAndroid) {
           return 5;
         } else {
           return 2;
