@@ -1,5 +1,9 @@
 #  
 
+## 1.4.2
+* 修复包名改为 `ali_auth_spm` 后 Android 工程引用失败的问题
+* 修复 CocoaPods 无法找到 `ali_auth_spm` podspec 的问题
+
 ## 1.4.1
 * 新增 iOS Swift Package Manager 支持，并继续兼容 CocoaPods
 * 将 iOS 插件源码从 Objective-C 全面迁移至 Swift，Flutter 通道接口保持不变

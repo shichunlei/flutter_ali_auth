@@ -82,7 +82,7 @@ After obtaining `accessToken` and `jwtToken` from your application server, call 
 ## Install    
 ```
 dependencies:
-  ali_auth_spm: ^1.4.1
+  ali_auth_spm: ^1.4.2
 ```
 
 ## DEMO    

@@ -1,5 +1,9 @@
 #  
 
+## 1.4.2
+* Fix Android integration after renaming the package to `ali_auth_spm`
+* Fix CocoaPods discovery by matching the podspec name to `ali_auth_spm`
+
 ## 1.4.1
 * Add Swift Package Manager support for iOS while retaining CocoaPods compatibility
 * Migrate all iOS plugin source code from Objective-C to Swift without changing the Flutter channel APIs

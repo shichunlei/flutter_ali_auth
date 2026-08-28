@@ -120,7 +120,7 @@
 ## 安装
 ```
 dependencies:
-  ali_auth_spm: ^1.4.1
+  ali_auth_spm: ^1.4.2
 ```
 
 ## DEMO截图    
