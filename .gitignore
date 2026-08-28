@@ -1,8 +1,14 @@
 .DS_Store
 .dart_tool/
+.build/
+.swiftpm/
 
 .packages
 .pub/
 .idea/
+*.iml
+**/local.properties
 
 build/
+
+*.lock

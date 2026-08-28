@@ -1,4 +1,4 @@
-import 'package:ali_auth/ali_auth.dart';
+import 'package:ali_auth_spm/ali_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 

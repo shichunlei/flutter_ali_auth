@@ -1,6 +1,6 @@
-# ali_auth_example
+# ali_auth_spm example
 
-Demonstrates how to use the ali_auth plugin.
+Demonstrates how to use the ali_auth_spm plugin.
 
 ## Getting Started
 

@@ -1,4 +1,5 @@
-import 'package:ali_auth_example/my_home_page.dart';
+import 'package:ali_auth_example/my_home_page.dart'
+    if (dart.library.js_interop) 'package:ali_auth_example/my_home_page_web.dart';
 import 'package:flutter/material.dart';
 
 class MyRouterPage extends StatefulWidget {

@@ -1,15 +1,8 @@
-[![Pub](https://img.shields.io/pub/v/ali_auth.svg)](https://pub.flutter-io.cn/packages/ali_auth)
-![example workflow](https://github.com/CodeGather/flutter_ali_auth/actions/workflows/build.yml/badge.svg)
-![example workflow](https://github.com/CodeGather/flutter_ali_auth/actions/workflows/release.yml/badge.svg)
-![example workflow](https://github.com/CodeGather/flutter_ali_auth/actions/workflows/publish.yml/badge.svg)
+[![Pub](https://img.shields.io/pub/v/ali_auth_spm.svg)](https://pub.dev/packages/ali_auth_spm)
 
+# ali_auth_spm
 
-[![GitHub license](https://img.shields.io/github/license/CodeGather/flutter_ali_auth?style=social)](https://github.com/CodeGather/flutter_ali_auth/blob/master/LICENSE)
-[![GitHub issues](https://img.shields.io/github/issues/CodeGather/flutter_ali_auth?style=social)](https://github.com/CodeGather/flutter_ali_auth/issues)
-[![GitHub forks](https://img.shields.io/github/forks/CodeGather/flutter_ali_auth?style=social)](https://github.com/CodeGather/flutter_ali_auth/network)
-[![GitHub stars](https://img.shields.io/github/stars/CodeGather/flutter_ali_auth?style=social)](https://github.com/CodeGather/flutter_ali_auth/stargazers)
-[![GitHub size](https://img.shields.io/github/repo-size/CodeGather/flutter_ali_auth?style=social)](https://github.com/CodeGather/flutter_ali_auth)
-[![GitHub release](https://img.shields.io/github/v/release/CodeGather/flutter_ali_auth?style=social)](https://github.com/CodeGather/flutter_ali_auth/releases)
+这是 [`ali_auth`](https://github.com/CodeGather/flutter_ali_auth) 的维护分支，保留原项目署名与许可证，并增加 iOS Swift Package Manager、Swift 实现及 Web 支持。当前源码维护于 [`shichunlei/flutter_ali_auth`](https://github.com/shichunlei/flutter_ali_auth)。
 
 ## :large_blue_circle: 国际化
 
@@ -71,6 +64,22 @@
 | :------:|:----:|
 | Android  | YES |
 | Ios      | YES |
+| Web      | YES |
+
+### iOS 依赖管理
+
+插件同时支持 Swift Package Manager 和 CocoaPods。Flutter 3.44 及以上版本会自动使用 Swift Package Manager；旧版 Flutter 项目可继续通过 CocoaPods 集成。
+
+### Web 配置
+
+将阿里云号码认证 Web SDK 放到应用的 `web/js/numberAuth-web-sdk.js`，并在 `web/index.html` 的 Flutter 启动脚本之前引入：
+
+```html
+<script src="js/numberAuth-web-sdk.js"></script>
+<script src="flutter_bootstrap.js" async></script>
+```
+
+从业务服务端获取 `accessToken` 和 `jwtToken` 后，先调用 `AliAuth.checkAuthAvailable` 完成鉴权，再调用 `AliAuth.getVerifyToken` 获取本机号码校验 Token。完整用法见 `example/lib/my_home_page_web.dart`。
 
 
 ## 授权⻚点击事件响应码 
@@ -108,12 +117,10 @@
 如下图所示添加的为错误操作  
 <img src="https://raw.githubusercontent.com/CodeGather/flutter_ali_auth/master/screenshots/error_add.jpg" alt="cmcc_crash" width="110"><img src="https://raw.githubusercontent.com/CodeGather/flutter_ali_auth/master/screenshots/error_add2.png" alt="cmcc_crash" width="200">
 
-## 实验安装    
+## 安装
 ```
 dependencies:
-   ali_auth:
-      git:
-        url: https://github.com/CodeGather/flutter_ali_auth.git
+  ali_auth_spm: ^1.4.1
 ```
 
 ## DEMO截图    
@@ -123,16 +130,3 @@ dependencies:
 ## 演示
   
 <img src="https://raw.githubusercontent.com/CodeGather/flutter_ali_auth/master/screenshots/SVID_20220517_120504.gif" width="100"> 
-
-## 如果你觉得不错欢迎打赏
-
-<img src="https://raw.githubusercontent.com/CodeGather/flutter_ali_auth/master/screenshots/play_al.jpg" width="200"><img src="https://raw.githubusercontent.com/CodeGather/flutter_ali_auth/master/screenshots/play_wx.jpg" width="222">  
-
-## 知识星球
-### 为了不浪费大家宝贵的时间，也迫于现实的压力，如果你想获取更优质的服务欢迎加入知识星球，提供的服务远比一杯咖啡更有性价比
-
-<img src="https://raw.githubusercontent.com/CodeGather/flutter_ali_auth/master/screenshots/zsxq.png" width="400">  
-
-## 关注趋势
-
-[![Stargazers over time](https://starchart.cc/CodeGather/flutter_ali_auth.svg)](https://starchart.cc/CodeGather/flutter_ali_auth)

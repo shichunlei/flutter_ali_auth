@@ -1,8 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'my_home_page.dart';
-import 'my_home_page_web.dart';
+import 'my_home_page.dart' if (dart.library.js_interop) 'my_home_page_web.dart';
 import 'my_router_page.dart';
 
 void main() {
@@ -29,16 +28,10 @@ class _MyAppState extends State<MyApp> {
     if (kDebugMode) {
       print("获取到路由数据--------$router");
     }
-    if (defaultTargetPlatform == TargetPlatform.iOS ||
-        defaultTargetPlatform == TargetPlatform.android) {
-      if (router.contains('routerPage')) {
-        return const MyRouterPage();
-      } else {
-        return const MyHomePage();
-      }
-    } else {
-      return const MyHomePageWeb();
+    if (router.contains('routerPage')) {
+      return const MyRouterPage();
     }
+    return const MyHomePage();
   }
 
   @override
@@ -57,7 +50,7 @@ class _MyAppState extends State<MyApp> {
               textColor: Colors.white,
               fontSize: 16.0);
         }
-      },// look here!
+      }, // look here!
       child: MaterialApp(
         home: getDefaultRouter(),
         routes: <String, WidgetBuilder>{

@@ -1,5 +1,9 @@
 #  
 
+## 1.4.1
+* Add Swift Package Manager support for iOS while retaining CocoaPods compatibility
+* Migrate all iOS plugin source code from Objective-C to Swift without changing the Flutter channel APIs
+
 ## 1.4.0
 * Update Android SDK to 2.14.23
 * Update iOS SDK to 2.14.18
@@ -14,7 +18,6 @@
 * Fix iOS: privacyAlertTitleOffsetY being overwritten
 * Fix iOS: add privacyAlertContentHorizontalMargin support
 * Unify 500001 status code message across platforms
-* Fix Web: complete all interface methods in ali_auth_web, throw clear UnsupportedError for unsupported methods
 * New feature: add dynamic config editor page (ConfigEditorPage) for visual parameter tuning
 * Optimize demo page layout with card-based grouped design
 

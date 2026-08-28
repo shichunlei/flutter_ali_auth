@@ -1,41 +1,16 @@
 PODS:
-  - ali_auth (1.3.8):
-    - Flutter
-    - MJExtension
-    - SDWebImage
   - Flutter (1.0.0)
-  - fluttertoast (0.0.2):
-    - Flutter
-  - MJExtension (3.4.2)
-  - SDWebImage (5.21.3):
-    - SDWebImage/Core (= 5.21.3)
-  - SDWebImage/Core (5.21.3)
 
 DEPENDENCIES:
-  - ali_auth (from `.symlinks/plugins/ali_auth/ios`)
   - Flutter (from `Flutter`)
-  - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
-
-SPEC REPOS:
-  trunk:
-    - MJExtension
-    - SDWebImage
 
 EXTERNAL SOURCES:
-  ali_auth:
-    :path: ".symlinks/plugins/ali_auth/ios"
   Flutter:
     :path: Flutter
-  fluttertoast:
-    :path: ".symlinks/plugins/fluttertoast/ios"
 
 SPEC CHECKSUMS:
-  ali_auth: b40aa22a08bce3d4b50f00fb498f6cdc566cad0f
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
-  fluttertoast: 21eecd6935e7064cc1fcb733a4c5a428f3f24f0f
-  MJExtension: e97d164cb411aa9795cf576093a1fa208b4a8dd8
-  SDWebImage: 16309af6d214ba3f77a7c6f6fdda888cb313a50a
 
 PODFILE CHECKSUM: aa816d5d481f63a1be71fbb8f8dddfdb9fb7d204
 
-COCOAPODS: 1.16.2
+COCOAPODS: 1.17.0
