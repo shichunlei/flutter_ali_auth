@@ -7,11 +7,11 @@ class PhoneNumberServer {
 }
 
 extension PhoneNumberServerApi on PhoneNumberServer {
-  external JSString? getConnection();
+  external JSPromise<JSString?> getConnection();
 
   external void setLoggerEnable(bool isEnable);
 
-  external JSString? getVersion();
+  external JSPromise<JSString?> getVersion();
 
   external void checkAuthAvailable(AliAuthWebParams params);
 
@@ -37,13 +37,15 @@ class AliAuthPluginWebApi {
 
   final PhoneNumberServer _server;
 
-  Future<String?> getConnection() async => _server.getConnection()?.toDart;
+  Future<String?> getConnection() async =>
+      (await _server.getConnection().toDart)?.toDart;
 
   Future<void> setLoggerEnable(bool isEnable) async {
     _server.setLoggerEnable(isEnable);
   }
 
-  Future<String?> getVersion() async => _server.getVersion()?.toDart;
+  Future<String?> getVersion() async =>
+      (await _server.getVersion().toDart)?.toDart;
 
   Future<void> checkAuthAvailable(
     String accessToken,

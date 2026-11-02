@@ -4,6 +4,8 @@
 
 This is a maintained fork of [`ali_auth`](https://github.com/CodeGather/flutter_ali_auth). It preserves the original attribution and license while adding iOS Swift Package Manager, a Swift implementation, and Web support. The fork is maintained at [`shichunlei/flutter_ali_auth`](https://github.com/shichunlei/flutter_ali_auth).
 
+Fork version `1.4.4` syncs upstream `1.4.0` at commit `712747d`, retaining iOS SPM, Swift sources, and CocoaPods compatibility. Future syncs must port upstream `ios/Classes` behavior changes into `ios/ali_auth_spm/Sources/ali_auth_spm`; fork versions advance independently.
+
 
 ## :large_blue_circle: Internationalization
 
@@ -82,7 +84,7 @@ After obtaining `accessToken` and `jwtToken` from your application server, call 
 ## Install    
 ```
 dependencies:
-  ali_auth_spm: ^1.4.3
+  ali_auth_spm: ^1.4.4
 ```
 
 ## DEMO    

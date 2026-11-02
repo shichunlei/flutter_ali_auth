@@ -1,5 +1,10 @@
 #  
 
+## 1.4.4
+* Sync upstream ali_auth 1.4.0 at commit 712747d, including Android, Web, and HarmonyOS updates.
+* Port iOS carrier slogans, cross-fade animations, button styling/hit areas, and privacy layout fixes to Swift; retain SPM and CocoaPods support.
+* Preserve fork package identity, Web callback conversion, and Android integration.
+
 ## 1.4.3
 * Fix Flutter Swift Package Manager discovery by matching the package directory, product, and target names to `ali_auth_spm`
 

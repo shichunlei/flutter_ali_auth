@@ -199,6 +199,7 @@ public final class AliAuthPlugin: NSObject, FlutterPlugin, FlutterStreamHandler 
                     self.showResult(result)
                     return
                 }
+                self.updateCarrierSlogan(for: model, configuration: configuration)
                 TXCommonHandler.sharedInstance().getLoginToken(
                     withTimeout: 5,
                     controller: controller,
@@ -231,6 +232,16 @@ public final class AliAuthPlugin: NSObject, FlutterPlugin, FlutterStreamHandler 
                 }
             }
         }
+    }
+
+    private func updateCarrierSlogan(for model: TXCustomModel, configuration: [String: Any]) {
+        guard configuration.string("sloganText").isEmpty else { return }
+        let carrier = TXCommonUtils.getCurrentCarrierName() ?? ""
+        let knownCarriers = ["中国移动", "中国联通", "中国电信", "中国广电"]
+        let text = knownCarriers.contains(carrier) ? "由\(carrier)提供认证服务" : "由运营商提供认证服务"
+        let attributes = model.sloganText.length > 0
+            ? model.sloganText.attributes(at: 0, effectiveRange: nil) : [:]
+        model.sloganText = NSAttributedString(string: text, attributes: attributes)
     }
 
     @objc private func thirdPartyButtonTapped(_ sender: UIButton) {

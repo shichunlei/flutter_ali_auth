@@ -40,7 +40,7 @@ class _MyAppState extends State<MyApp> {
       canPop: false,
       onPopInvokedWithResult: (didPop, result) {
         // 退出APP方法二
-        if (!didPop) {
+        if (!didPop && defaultTargetPlatform.name != 'ohos') {
           Fluttertoast.showToast(
               msg: '您确定要退出思预云吗?',
               toastLength: Toast.LENGTH_SHORT,

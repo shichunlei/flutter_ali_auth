@@ -1,6 +1,6 @@
 name: ali_auth_spm
 description: A maintained Flutter fork for Alibaba Cloud one-click login, with Android, Web, CocoaPods, and iOS Swift Package Manager support.
-version: 1.4.3
+version: 1.4.4
 homepage: https://github.com/shichunlei/flutter_ali_auth
 repository: https://github.com/shichunlei/flutter_ali_auth
 issue_tracker: https://github.com/shichunlei/flutter_ali_auth/issues
@@ -37,6 +37,8 @@ flutter:
         package: com.sean.rao.ali_auth
         pluginClass: AliAuthPlugin
       ios:
+        pluginClass: AliAuthPlugin
+      ohos:
         pluginClass: AliAuthPlugin
       web:
         pluginClass: AliAuthPluginWeb

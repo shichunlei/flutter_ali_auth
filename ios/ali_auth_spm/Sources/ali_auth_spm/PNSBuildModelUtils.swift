@@ -22,7 +22,7 @@ enum PNSBuildModelUtils {
             backgroundView = view
         }
 
-        configureAnimations(model, style: style)
+        configureAnimations(model, configuration: configuration, style: style)
         configureNavigation(model, configuration: configuration, style: style)
         configurePrimaryControls(model, configuration: configuration)
         configureCustomViews(
@@ -84,7 +84,7 @@ enum PNSBuildModelUtils {
         }
     }
 
-    private static func configureAnimations(_ model: TXCustomModel, style: PNSBuildModelStyle) {
+    private static func configureAnimations(_ model: TXCustomModel, configuration: [String: Any], style: PNSBuildModelStyle) {
         if style == .alertFade {
             let entry = CABasicAnimation(keyPath: "transform.scale")
             entry.fromValue = 1.03
@@ -120,6 +120,21 @@ enum PNSBuildModelUtils {
             ]
             animation.duration = 0.25
             model.entryAnimation = animation
+        }
+        if configuration.bool("authPageCrossFade") {
+            let entry = CABasicAnimation(keyPath: "opacity")
+            entry.fromValue = 0
+            entry.toValue = 1
+            entry.duration = 0.26
+            entry.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+            model.entryAnimation = entry
+
+            let exit = CABasicAnimation(keyPath: "opacity")
+            exit.fromValue = 1
+            exit.toValue = 0
+            exit.duration = 0.26
+            exit.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+            model.exitAnimation = exit
         }
     }
 
@@ -207,7 +222,10 @@ enum PNSBuildModelUtils {
             string: configuration.string("logBtnText", default: "一键登录"),
             attributes: [
                 .foregroundColor: UIColor.aliAuth(hex: configuration.string("logBtnTextColor", default: "#ff00ff")),
-                .font: UIFont.systemFont(ofSize: configuration.cgFloat("logBtnTextSize", default: 23))
+                .font: UIFont.systemFont(
+                    ofSize: configuration.cgFloat("logBtnTextSize", default: 23),
+                    weight: configuration.bool("logBtnTextBold") ? .semibold : .regular
+                )
             ]
         )
         let paths = configuration.string("logBtnBackgroundPath", default: ",").components(separatedBy: ",")
@@ -244,11 +262,14 @@ enum PNSBuildModelUtils {
             )
             model.changeBtnFrameBlock = { screenSize, superViewSize, frame in
                 guard screenSize.height > screenSize.width else { return .zero }
+                let height = max(30, configuration.cgFloat("switchAccButtonHeight", default: 30))
+                let width = min(superViewSize.width - 20,
+                                configuration.cgFloat("switchAccButtonWidth", default: superViewSize.width - 20))
                 return CGRect(
-                    x: 10,
-                    y: configuration.cgFloat("switchOffsetY", default: frame.origin.y),
-                    width: superViewSize.width - 20,
-                    height: 30
+                    x: (superViewSize.width - width) / 2,
+                    y: configuration.cgFloat("switchOffsetY", default: frame.origin.y) + (30 - height) / 2,
+                    width: width,
+                    height: height
                 )
             }
         }
@@ -318,8 +339,17 @@ enum PNSBuildModelUtils {
         model.privacyTwo = [configuration.string("protocolTwoName"), configuration.string("protocolTwoURL")]
         model.privacyThree = [configuration.string("protocolThreeName"), configuration.string("protocolThreeURL")]
         model.expandAuthPageCheckedScope = true
-        model.privacyFrameBlock = { _, _, frame in
+        model.privacyFrameBlock = { _, superViewSize, frame in
             var frame = frame
+            let bottom = configuration.cgFloat("privacyOffsetY_B", default: -1)
+            if bottom >= 0 {
+                frame.origin.y = max(0, superViewSize.height - bottom - frame.height)
+            }
+            let margin = configuration.cgFloat("privacyMargin", default: -1)
+            if margin >= 0, superViewSize.width > 2 * margin {
+                frame.origin.x = margin
+                frame.size.width = superViewSize.width - 2 * margin
+            }
             let y = configuration.cgFloat("privacyOffsetY", default: -1)
             let x = configuration.cgFloat("privacyOffsetX", default: -1)
             if y > -1 { frame.origin.y = y }

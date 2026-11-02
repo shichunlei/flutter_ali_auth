@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "ali_auth_spm",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet"
+    ]
+  }
+}

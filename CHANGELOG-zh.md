@@ -1,5 +1,10 @@
 #  
 
+## 1.4.4
+* 同步上游 ali_auth 1.4.0（提交 712747d），合入 Android、Web 和鸿蒙更新。
+* 将 iOS 运营商文案、淡入淡出、按钮样式与点击区域、隐私协议布局改动迁移至 Swift，保留 SPM 和 CocoaPods 支持。
+* 保留 fork 包名、Web 回调数据转换及 Android 集成修复。
+
 ## 1.4.3
 * 修复 Flutter 无法识别 Swift Package Manager 支持的问题，同步 SPM 目录、product 与 target 名称为 `ali_auth_spm`
 
@@ -12,6 +17,7 @@
 * 将 iOS 插件源码从 Objective-C 全面迁移至 Swift，Flutter 通道接口保持不变
 
 ## 1.4.0
+* 新增鸿蒙端
 * 更新android sdk 为 2.14.23
 * 更新ios sdk 为 2.14.18
 * 将IOS的引入改为动态库，将framework修改xcframework 兼容 Apple Silicon iOS 26+ simulators

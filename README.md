@@ -4,6 +4,8 @@
 
 这是 [`ali_auth`](https://github.com/CodeGather/flutter_ali_auth) 的维护分支，保留原项目署名与许可证，并增加 iOS Swift Package Manager、Swift 实现及 Web 支持。当前源码维护于 [`shichunlei/flutter_ali_auth`](https://github.com/shichunlei/flutter_ali_auth)。
 
+本分支 `1.4.4` 同步上游 `1.4.0`（提交 `712747d`），保留 iOS SPM、Swift 实现及 CocoaPods 兼容。后续升级需将上游 `ios/Classes` 的行为改动迁移至 `ios/ali_auth_spm/Sources/ali_auth_spm`，包版本独立递增。
+
 ## :large_blue_circle: 国际化
 
 中文文档 | [English](README_en.md)
@@ -120,7 +122,7 @@
 ## 安装
 ```
 dependencies:
-  ali_auth_spm: ^1.4.3
+  ali_auth_spm: ^1.4.4
 ```
 
 ## DEMO截图    
