@@ -5,8 +5,21 @@ import 'ali_auth_platform_interface.dart';
 export 'ali_auth_enum.dart';
 export 'ali_auth_model.dart';
 
-/// 阿里云一键登录类
-/// 原来的全屏登录和dialog 统一有配置参数isDislog来控制
+/// 阿里云认证的上游静态入口；将配置和事件交由平台插件，宿主负责注销监听。
+///
+/// ```dart
+/// import 'package:ali_auth_spm/ali_auth.dart';
+///
+/// Future<void> startAuth() async {
+///   AliAuth.loginListen(onEvent: (dynamic event) {});
+///   await AliAuth.initSdk(AliAuthModel('android-secret', 'ios-secret'));
+/// }
+///
+/// Future<void> stopAuth() async {
+///   await AliAuth.quitPage();
+///   AliAuth.dispose();
+/// }
+/// ```
 class AliAuth {
   /// 初始化监听
   static Stream<dynamic>? onChange({bool type = true}) {
@@ -90,32 +103,24 @@ class AliAuth {
     return AliAuthPlatform.instance.dispose();
   }
 
-  /// Web only: returns the browser network connection reported by the SDK.
-  static Future<String?> get connection async {
-    return AliAuthPlatform.instance.getConnection();
-  }
-
-  /// Web only: enables or disables SDK logging.
-  static Future<void> setLoggerEnable(bool isEnable) async {
-    return AliAuthPlatform.instance.setLoggerEnable(isEnable);
-  }
-
-  /// Web only: authenticates the access token and JWT issued by your server.
-  static Future<void> checkAuthAvailable(
-    String accessToken,
-    String jwtToken, {
-    required void Function(dynamic) success,
-    required void Function(dynamic) error,
-  }) async {
+  /// Web 鉴权；[accessToken] 与 [jwtToken] 由宿主服务端签发，不记录或持久化。
+  ///
+  /// [success]、[error] 在 JS SDK 回调时接收原始 JS 对象，不隐式转换为 Dart Map。
+  /// 返回的 Future 只表示请求已交给 JS SDK，不等待业务回调；同步互操作失败向上传播。
+  static Future<void> checkAuthAvailable(String accessToken, String jwtToken,
+      {required Function(dynamic) success,
+      required Function(dynamic) error}) async {
     await AliAuthPlatform.instance
         .checkAuthAvailable(accessToken, jwtToken, success, error);
   }
 
-  /// Web only: gets a local-number verification token.
-  static Future<void> getVerifyToken({
-    required void Function(dynamic) success,
-    required void Function(dynamic) error,
-  }) async {
+  /// Web 取号校验；调用前应由宿主完成鉴权。
+  ///
+  /// [success]、[error] 接收 SDK 的原始 JS 结果，回调由宿主负责后续转换和业务处理。
+  /// Future 仅表示已提交调用，不等待结果；JS 互操作失败向上传播，不注册额外监听。
+  static Future<void> getVerifyToken(
+      {required Function(dynamic) success,
+      required Function(dynamic) error}) async {
     await AliAuthPlatform.instance.getVerifyToken(success, error);
   }
 }

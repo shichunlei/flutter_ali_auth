@@ -84,7 +84,30 @@ enum PNSBuildModelUtils {
         }
     }
 
+    /// 按上游 OC 顺序配置动画：先通用淡入淡出，再由特殊页面样式覆盖。
+    ///
+    /// - Parameters:
+    ///   - model: 当前 SDK 模型，持有生成的动画及弹窗 frame 回调。
+    ///   - configuration: 平台 Map；authPageCrossFade 缺失/null/false 时不设置通用动画。
+    ///   - style: 上游页面类型，alertFade 覆盖进入和退出，alertDropDown 只覆盖进入动画。
+    ///
+    /// 不创建 View、不注册监听，动画由 SDK 管理；不得调换通用与特殊样式的赋值顺序。
     private static func configureAnimations(_ model: TXCustomModel, configuration: [String: Any], style: PNSBuildModelStyle) {
+        if configuration.bool("authPageCrossFade") {
+            let entry = CABasicAnimation(keyPath: "opacity")
+            entry.fromValue = 0
+            entry.toValue = 1
+            entry.duration = 0.26
+            entry.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+            model.entryAnimation = entry
+
+            let exit = CABasicAnimation(keyPath: "opacity")
+            exit.fromValue = 1
+            exit.toValue = 0
+            exit.duration = 0.26
+            exit.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+            model.exitAnimation = exit
+        }
         if style == .alertFade {
             let entry = CABasicAnimation(keyPath: "transform.scale")
             entry.fromValue = 1.03
@@ -121,21 +144,7 @@ enum PNSBuildModelUtils {
             animation.duration = 0.25
             model.entryAnimation = animation
         }
-        if configuration.bool("authPageCrossFade") {
-            let entry = CABasicAnimation(keyPath: "opacity")
-            entry.fromValue = 0
-            entry.toValue = 1
-            entry.duration = 0.26
-            entry.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
-            model.entryAnimation = entry
 
-            let exit = CABasicAnimation(keyPath: "opacity")
-            exit.fromValue = 1
-            exit.toValue = 0
-            exit.duration = 0.26
-            exit.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
-            model.exitAnimation = exit
-        }
     }
 
     private static func configureNavigation(
@@ -181,6 +190,14 @@ enum PNSBuildModelUtils {
         }
     }
 
+    /// 将主控件的文案、背景及布局参数写入一次授权页的模型。
+    ///
+    /// - Parameters:
+    ///   - model: SDK 持有的配置模型；接收图片、富文本和不捕获模型自身的布局回调。
+    ///   - configuration: Dart 平台通道 Map，尺寸为 pt；缺失参数沿用已有布局默认值。
+    ///
+    /// 背景图按上游规则逐状态回退到插件资源；不合成纯色或圆角背景。
+    /// 此方法不创建 View 或订阅，图片由模型持有，模型释放后一起释放。
     private static func configurePrimaryControls(_ model: TXCustomModel, configuration: [String: Any]) {
         if !model.logoIsHidden, model.value(forKey: "logoImage") is UIImage {
             model.logoFrameBlock = { screenSize, superViewSize, _ in
@@ -229,13 +246,10 @@ enum PNSBuildModelUtils {
             ]
         )
         let paths = configuration.string("logBtnBackgroundPath", default: ",").components(separatedBy: ",")
-        if paths.count == 3 {
-            let customImages = paths.compactMap(assetImage)
-            if customImages.count == 3 {
-                model.loginBtnBgImgs = customImages
-            } else if let click = bundledImage("button_click"), let unclick = bundledImage("button_unclick") {
-                model.loginBtnBgImgs = [click, unclick, click]
-            }
+        if paths.count == 3,
+           let backgrounds = loginButtonBackgrounds(customImages: paths.map(assetImage),
+               defaultClick: bundledImage("button_click"), defaultUnclick: bundledImage("button_unclick")) {
+            model.loginBtnBgImgs = backgrounds
         }
         model.loginBtnFrameBlock = { screenSize, superViewSize, frame in
             var frame = frame
@@ -273,6 +287,23 @@ enum PNSBuildModelUtils {
                 )
             }
         }
+    }
+
+    /// 以与上游 OC 相同的规则选择登录按钮三态图片，不合成或修改图片。
+    ///
+    /// - Parameters:
+    ///   - customImages: 激活、失效、高亮顺序的三项资源，可含 nil；项数不为 3 时返回 nil。
+    ///   - defaultClick: 插件激活/高亮回退资源，可为 nil。
+    ///   - defaultUnclick: 插件失效状态回退资源，可为 nil。
+    /// - Returns: 三项自定义图片均存在，或两种回退资源均存在时返回完整三态数组；
+    ///   其他情况返回 nil，让 SDK 保持原设置。允许逐状态混用自定义和回退图片。
+    ///
+    /// 返回数组复用传入图片引用；不缓存、绘图或创建页面资源，仅由调用者持有。
+    static func loginButtonBackgrounds(customImages: [UIImage?], defaultClick: UIImage?, defaultUnclick: UIImage?) -> [UIImage]? {
+        guard customImages.count == 3,
+              customImages.allSatisfy({ $0 != nil }) || (defaultClick != nil && defaultUnclick != nil) else { return nil }
+        return [customImages[0] ?? defaultClick, customImages[1] ?? defaultUnclick, customImages[2] ?? defaultClick]
+            .compactMap { $0 }
     }
 
     private static func configureCustomViews(
@@ -329,6 +360,15 @@ enum PNSBuildModelUtils {
         }
     }
 
+    /// 等价执行上游 712747d 的协议控件配置，不扩展平台参数或改变排版策略。
+    ///
+    /// - Parameters:
+    ///   - model: 一次 SDK 初始化的配置模型，持有图片与回调；回调不反向捕获 model。
+    ///   - configuration: 原生参数；负偏移表示保留 SDK 输入，显式 X/Y 优先于底部和边距。
+    ///
+    /// 上游按容器高度处理底部位置，再改左右边距；Swift 保持该顺序及原生默认值，
+    /// 不额外设置 privacyBottomOffetY/ privacyLRPadding 或注入安全区。宿主可按平台
+    /// 选择不传强制底部位置。isDebug 只记录几何参数，不记录手机号、密钥或协议正文。
     private static func configurePrivacy(_ model: TXCustomModel, configuration: [String: Any]) {
         if !model.checkBoxIsHidden,
            let unchecked = assetImage(configuration.string("uncheckedImgPath")),
@@ -339,8 +379,16 @@ enum PNSBuildModelUtils {
         model.privacyTwo = [configuration.string("protocolTwoName"), configuration.string("protocolTwoURL")]
         model.privacyThree = [configuration.string("protocolThreeName"), configuration.string("protocolThreeURL")]
         model.expandAuthPageCheckedScope = true
-        model.privacyFrameBlock = { _, superViewSize, frame in
+        let debug = configuration.bool("isDebug")
+        if debug {
+            NSLog("[ali_auth_spm][privacy.config] margin=%@ bottom=%@ checkboxHidden=%@ fontSize=%@",
+                  String(describing: configuration.cgFloat("privacyMargin", default: -1)),
+                  String(describing: configuration.cgFloat("privacyOffsetY_B", default: -1)),
+                  String(model.checkBoxIsHidden), String(describing: model.privacyFont.pointSize))
+        }
+        model.privacyFrameBlock = { screenSize, superViewSize, frame in
             var frame = frame
+            let incoming = frame
             let bottom = configuration.cgFloat("privacyOffsetY_B", default: -1)
             if bottom >= 0 {
                 frame.origin.y = max(0, superViewSize.height - bottom - frame.height)
@@ -354,7 +402,26 @@ enum PNSBuildModelUtils {
             let x = configuration.cgFloat("privacyOffsetX", default: -1)
             if y > -1 { frame.origin.y = y }
             if x > -1 { frame.origin.x = x }
+            if debug {
+                NSLog("[ali_auth_spm][privacy.layout] screen=%@ container=%@ incoming=%@ returned=%@ x=%@ y=%@ bottom=%@ margin=%@",
+                      NSCoder.string(for: screenSize), NSCoder.string(for: superViewSize),
+                      NSCoder.string(for: incoming), NSCoder.string(for: frame), String(describing: x),
+                      String(describing: y), String(describing: bottom), String(describing: margin))
+            }
             return frame
+        }
+        if debug {
+            // 日志在已有自定义布局回调之后执行；只观察 SDK 布局，不修改任何 frame 或参数。
+            let previousLayout = model.value(forKey: "customViewLayoutBlock") == nil ? nil : model.customViewLayoutBlock
+            let style = PNSBuildModelStyle(rawValue: configuration.int("pageType")) ?? .portrait
+            let isFullPage = [.portrait, .landscape, .gifBackground, .videoBackground].contains(style)
+            model.customViewLayoutBlock = { screen, content, nav, title, logo, slogan, number, login, change, privacy in
+                previousLayout?(screen, content, nav, title, logo, slogan, number, login, change, privacy)
+                let contentPrivacy = isFullPage ? privacy.offsetBy(dx: 0, dy: nav.maxY) : privacy
+                NSLog("[ali_auth_spm][privacy.final] screen=%@ content=%@ nav=%@ sdkPrivacy=%@ contentPrivacy=%@",
+                      NSCoder.string(for: screen), NSCoder.string(for: content), NSCoder.string(for: nav),
+                      NSCoder.string(for: privacy), NSCoder.string(for: contentPrivacy))
+            }
         }
     }
 

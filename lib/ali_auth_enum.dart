@@ -1,5 +1,4 @@
-import 'ali_auth_platform_stub.dart'
-    if (dart.library.io) 'ali_auth_platform_io.dart' as platform;
+import 'dart:io';
 
 /// 本机号码校验,一键登录
 enum SdkType { auth, login }
@@ -87,18 +86,22 @@ enum PageType {
 }
 
 class EnumUtils {
+  /// 将 [status] 转为上游平台布局常量；null 返回 4，不校验布局是否支持该值。
+  ///
+  /// Android 左/右为 3/5，其他平台为 0/2，居中均为 1；读取 dart:io 平台标识，
+  /// 不访问 UI 或持有资源，具体 Web 限制保持上游行为。
   static int formatGravityValue(Gravity? status) {
     switch (status) {
       case Gravity.centerHorizntal:
         return 1;
       case Gravity.left:
-        if (platform.isAndroid) {
+        if (Platform.isAndroid) {
           return 3;
         } else {
           return 0;
         }
       case Gravity.right:
-        if (platform.isAndroid) {
+        if (Platform.isAndroid) {
           return 5;
         } else {
           return 2;

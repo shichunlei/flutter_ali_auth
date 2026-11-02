@@ -1,7 +1,7 @@
 import 'package:ali_auth_spm/ali_auth_model.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 import 'ali_auth_method_channel.dart'
-    if (dart.library.js_interop) 'ali_auth_web.dart';
+    if (dart.library.html) "ali_auth_web.dart";
 
 abstract class AliAuthPlatform extends PlatformInterface {
   /// Constructs a AliAuthPlatform.
@@ -98,29 +98,30 @@ abstract class AliAuthPlatform extends PlatformInterface {
     throw UnimplementedError('loginListen() has not been implemented.');
   }
 
+  /// 返回平台网络类型；未覆写时抛出上游 UnimplementedError，不创建资源。
   Future<String?> getConnection() {
-    throw UnimplementedError('getConnection() has not been implemented.');
+    throw UnimplementedError('getSdkVersion() has not been implemented.');
   }
 
+  /// 将 [isEnable] 交给具体平台设置 SDK 日志；默认实现抛出 UnimplementedError。
   Future<void> setLoggerEnable(bool isEnable) {
-    throw UnimplementedError('setLoggerEnable() has not been implemented.');
+    throw UnimplementedError('getSdkVersion() has not been implemented.');
   }
 
-  /// Web only: checks whether number authentication is available.
-  Future<void> checkAuthAvailable(
-    String accessToken,
-    String jwtToken,
-    void Function(dynamic) success,
-    void Function(dynamic) error,
-  ) {
-    throw UnimplementedError('checkAuthAvailable() has not been implemented.');
+  /// 提交 Web 鉴权；[accessToken] 和 [jwtToken] 来自宿主服务端，不在此处保存。
+  ///
+  /// [success]、[error] 由具体平台在 SDK 回调时调用；Web 传递原始 JS 对象。
+  /// Future 不表示业务回调已完成；默认实现以 UnimplementedError 失败。
+  Future<void> checkAuthAvailable(String accessToken, String jwtToken,
+      Function(dynamic) success, Function(dynamic) error) async {
+    throw UnimplementedError('getSdkVersion() has not been implemented.');
   }
 
-  /// Web only: gets a local-number verification token after authentication.
+  /// 提交 Web 校验取号；[success]、[error] 接收平台原始结果，由宿主管理业务处理。
+  ///
+  /// 鉴权前置条件由调用方保证；Future 仅表示提交调用，默认以 UnimplementedError 失败。
   Future<void> getVerifyToken(
-    void Function(dynamic) success,
-    void Function(dynamic) error,
-  ) {
-    throw UnimplementedError('getVerifyToken() has not been implemented.');
+      Function(dynamic) success, Function(dynamic) error) async {
+    throw UnimplementedError('getSdkVersion() has not been implemented.');
   }
 }

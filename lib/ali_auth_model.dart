@@ -218,9 +218,15 @@ class AliAuthModel {
   /// 如果设置错误或者找不到图片则使用默认样式
   late String? logBtnBackgroundPath;
 
-  /// Solid fallback and corner radius (vp/pt/dp) for native authorization buttons.
+  /// 登录按钮纯色背景回退，支持 #RRGGBB / #AARRGGBB；null 沿用现有背景，
+  /// 按上游声明传输；当前 iOS 运行入口不消费该字段，不合成纯色背景。
   late String? logBtnBackgroundColor;
+
+  /// 按钮背景圆角参数，按上游声明序列化为整数；null 原样输出。
+  /// 当前 iOS 运行入口不消费该字段，不对图片执行圆角渲染。
   late int? logBtnCornerRadius;
+
+  /// 登录按钮是否加粗；null 或 false 使用常规字重，true 在 iOS 使用 semibold。
   late bool? logBtnTextBold;
 
   /// 设置登录按钮相对导航栏顶部的位移，单位 dp
@@ -260,8 +266,12 @@ class AliAuthModel {
   /// @Deprecated("即将删除的属性......")
   late int? switchAccTextSize;
 
-  /// Optional accessible target size, without enlarging the label (Android/iOS).
+  /// 切换登录方式按钮宽度（Android dp、iOS pt）；null 使用插件默认宽度。
+  /// iOS 最大为容器宽度减 20，按钮文案字号独立由 switchAccTextSize 控制。
   late int? switchAccButtonWidth;
+
+  /// 切换登录方式按钮高度（Android dp、iOS pt）；null 使用插件默认高度。
+  /// iOS 最小为 30，围绕原位置垂直居中；此值不改变文案字号。
   late int? switchAccButtonHeight;
 
   /// 设置换按钮相对导航栏顶部的位移，单位 dp
@@ -402,8 +412,8 @@ class AliAuthModel {
   late int? pageBackgroundRadius;
   late bool? webSupportedJavascript;
 
-  /// setAuthPageActIn
-  /// Use a neutral fade for native entry/dismissal instead of navigation motion.
+  /// 是否启用原生授权页淡入淡出；null 或 false 使用当前页面样式默认动画。
+  /// iOS 先设置进入/退出各 0.26 秒的 opacity 动画，再由特殊页面样式覆盖相应动画。
   late bool? authPageCrossFade;
 
   /// setAuthPageActIn
@@ -896,17 +906,26 @@ class AliAuthModel {
     this.toastMarginBottom = 0,
     this.toastPositionMode = 'bottom',
     this.toastDelay = 3,
-    this.fullScreen=false,
-    this.authPageUseDayLight=false,
-    this.keepAllPageHideNavigationBar=false,
-    this.closeAuthPageReturnBack=false,
+    this.fullScreen = false,
+    this.authPageUseDayLight = false,
+    this.keepAllPageHideNavigationBar = false,
+    this.closeAuthPageReturnBack = false,
   })  : assert(androidSk != null || iosSk != null || ohosSk != null),
         assert(pageType != null),
         assert(isDelay != null);
 
+  /// 将当前配置编码为平台通道可接受的 Map，不调用原生 SDK。
+  ///
+  /// 返回新的 Map，包含配置中的 null 字段及协议默认值；枚举转换为平台标识，
+  /// 自定义视图显式转换为子 Map。不会修改模型，不包含异步步骤或资源释放副作用。
   Map<String, dynamic> toJson() => _$AliAuthModelToJson(this);
 }
 
+/// 将 [instance] 的配置复制为平台通道 Map；不修改模型或校验 SDK 密钥。
+///
+/// 输出键集合以上游 712747d 为准；privacyOffsetX、protocolOwnThreeColor 和
+/// privacyAlertOperatorColor 虽有字段声明但不输出。嵌套配置由各自 toJson 转为 Map，枚举转为
+/// 原生标识。该手写映射是 Dart 与原生 SDK 的协议边界，不执行请求或页面操作。
 Map<String, dynamic> _$AliAuthModelToJson(AliAuthModel instance) =>
     <String, dynamic>{
       'androidSk': instance.androidSk,
@@ -1123,7 +1142,8 @@ Map<String, dynamic> _$AliAuthModelToJson(AliAuthModel instance) =>
       'toastDelay': instance.toastDelay,
       'fullScreen': instance.fullScreen ?? false,
       'authPageUseDayLight': instance.authPageUseDayLight ?? false,
-      'keepAllPageHideNavigationBar': instance.keepAllPageHideNavigationBar ?? false,
+      'keepAllPageHideNavigationBar':
+          instance.keepAllPageHideNavigationBar ?? false,
       'closeAuthPageReturnBack': instance.closeAuthPageReturnBack ?? false,
     };
 
